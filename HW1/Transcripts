@@ -1,0 +1,89 @@
+2.
+
+    A = [10, -3; 4, 2];
+    B = [1, 0; -1, 2];
+    v = [1; 2];
+    w = [1; 1];
+
+    v'w         => a = v'* w;
+    vw'         => b = v * w';
+    Av          => c = A * v;
+    A'v         => d = A'* v;
+    AB          => e = A * B;
+    BA          => f = B * A;
+    AA          => g = A * A;
+    y in By = w => h = B\w;
+    x in Ax = v => i = A\v;
+
+4. 
+
+    x = [0, pi/6, 2*pi/6, 3*pi/6, 4*pi/6, 5*pi/6, pi, 7*pi/6, 8*pi/6, 9*pi/6, 10*pi/6, 11*pi/6, 2*pi]
+    T = table(x, cos(x), sin(x))
+
+5. 
+
+    a. 
+        %  Plot function over large interval.
+        subplot(2,1,1)
+        x = [-6:.01:3];
+        plot(x,2*cos(x)-exp(x))  
+        title('plot of 2cos(x) - exp(x)')
+
+        %  Zoom in on smaller interval about one root.
+        subplot(2,1,2)
+        xx = [-4.718:.0001:-4.716];
+        plot(xx,2*cos(xx)-exp(xx))  
+        axis([-4.718 -4.716 -0.02 0.02])
+        title('zoomed view')
+        Estimate: -4.717
+    b.
+        
+
+7. 
+
+    theta = linspace(0, 2*pi, 1000);
+    r = sqrt(2);
+    x = 2 + r*cos(theta);
+    y = 1 + r*sin(theta);
+    plot(x, y)
+    axis equal
+    hold on
+    theta2 = linspace(0, 2*pi, 1000);
+    r2 = sqrt(3.5);
+    x2 = 0 + r2*cos(theta2);
+    y2 = 2.5 + r2*sin(theta2);
+    plot(x2, y2)
+    axis equal
+
+    Intersections: 
+    [1.869,  2.408]
+    [0.6114,0.7319]
+
+9.
+
+    square   = magic(5);
+    row_sum  = sum(square, 2);
+    col_sum  = sum(square, 1);
+    diag_sum1 = sum(diag(square));
+    diag_sum2 = sum(diag(flip(square)));
+    is_magic = true;
+    if diag_sum1 ~= diag_sum2
+        is_magic = false;
+    end
+    for elem = row_sum
+        if elem ~= diag_sum1
+            is_magic = false;
+            break;
+        end
+    end
+    for elem = col_sum
+        if elem ~= diag_sum1
+            is_magic = false;
+            break;
+        end
+    end
+    if is_magic
+        disp("Its Magic!")
+    else
+        disp("Its not Magic! :(")
+    end
