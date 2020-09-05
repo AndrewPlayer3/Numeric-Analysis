@@ -23,7 +23,7 @@ function [x, history] = HW2bisect(f, a, b, delta)
         %Every iteration adds a row to history with the current interval
         history = [history ;[a, b]];
 
-        %If f(x) == 0 or it is less then or equal to the tolerance
+        %If f(c) == 0 or it is less then or equal to the tolerance
         %we have found the root and can return
         if f(c) == 0
             x = c;
