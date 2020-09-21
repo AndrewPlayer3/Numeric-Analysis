@@ -127,6 +127,10 @@ what can you say about the size of $|\sqrt{x}-P(x)|$?
 Hint: Use the remainder term!
 \end{exercise}
 \solution
+\begin{equation}
+1+\frac{x-1}{2}-\frac{1}{8}(x-1)^2+\frac{1}{16}(x-1)^3
+\end{equation}
+The size of the difference gets larger from 1 to 2.
 
 \begin{exercise}{Chapter 4: 2 (c)}
 
@@ -162,6 +166,74 @@ To answer the problem in the textbook, you will want to call your functin with
 $x_{\rm tol}=0$ to ensure that only the $f_{\rm tol}$ condition is used
 to stop the iteration.
 \end{exercise}
+\begin{verbatim}
+
+\end{verbatim}
+Code:
+\begin{lstlisting}[language=Matlab]
+function [r,hist] = hw3newton(f, fp, x1, ftol, xtol, Nmax)
+    
+  %X_{k}
+  current_value = x1;
+  %X_{k-1}
+  last_value = x1;
+  
+  iterations = 0;
+  hist = [current_value];
+  
+  while(true)
+      if(iterations > Nmax)
+          error("Iteration Count Exceeded")
+      end
+      
+      % Check if f(X_k) is sufficiently small
+      if(abs(f(last_value)) < ftol)
+          r = last_value;
+          return
+      end
+      
+      % Do the iteration
+      last_value = current_value;
+      current_value = current_value-f(current_value)/fp(current_value);
+      iterations = iterations + 1;
+      
+      % Check if |X_(k) - X_(k-1)| is sufficiently small
+      if(abs(current_value - last_value) < xtol)
+          r = current_value;
+          return
+      end
+
+      hist = [hist ;last_value];
+  end
+end
+\end{lstlisting}
+Output:
+\begin{lstlisting}[language=Matlab]
+>> func = @(x) ((5-x)*exp(x)-5);
+>> funcp = @(x) (-exp(x)*(x-4));
+>> xtol = 0;
+>> ftol = 1e-8;
+>> x1 = 5;
+>> Nmax = 25;
+>> [r,hist] = hw3newton(func, funcp, x1, ftol,xtol, Nmax);
+>> r
+
+r =
+
+  4.965114231746430
+
+>> hist
+
+hist =
+
+  5.000000000000000
+  4.966310265004573
+  4.965115686301458
+  4.965114231746430
+\end{lstlisting}
+\begin{verbatim}
+It should take 1 more iterations to get to 1e-16.
+\end{verbatim}
 
 \begin{exercise}{Chapter 4: 6 (a,b)}
 Also, use your \texttt{hw3newton} function from the previous problem
@@ -169,14 +241,48 @@ to compute the location of the minimum, and generate a plot that indicates that 
 \end{exercise}
 \solution 
 Part(a):
-
+The function has a minimum where h'(x) = 0, so f(x) = h'(x). Therefore, the netwons method formula
+for this function is:
+\begin{equation}
+x_{k} = x_{k-1} - \frac{f(x_{k-1})}{f'(x_{k-1})} = x_{k-1} - \frac{x_{k-1}^3-3}{3x_{k-1}^2}
+\end{equation}
 \solution
-Part(b):
+Part(b): 
+\begin{equation}
+x_{1} = 1 - \frac{(1)^3-3}{3(1)^2} = \frac{5}{3}
+\end{equation}
+Compute:
+\begin{lstlisting}[language=Matlab]
+>> func = @(x) (x.^4)/4-3*x;
+>> h = @(x) x.^3 - 3;
+>> hp = @(x) (3*x.^2);
+>> [r,hist] = newton(h, hp, x1, ftol, xtol, Nmax);
+>> r
+
+r =
+
+    1.442249570307408
+\end{lstlisting}
+This looks good compared to the plots:
+\newline
+\includegraphics[scale=0.5]{original.png}
+\includegraphics[scale=0.5]{zoomed.png}
 
 \begin{exercise}{Chapter 4: 7}
 \end{exercise}
+\begin{equation}
+x_1 = 4 - \frac{1}{f'(4)} = 3 
+\end{equation}
+\begin{equation}
+\frac{1}{f'(4)} = 1
+\end{equation}
+\begin{equation}
+f'(4) = 1
+\end{equation}
 
 \begin{exercise}{Chapter 4: 10}
+The function is discontinous at x=2, therefore the bisection
+will simply blow up to infinity rather than go towards the root.
 \end{exercise}
 
 \end{document}
