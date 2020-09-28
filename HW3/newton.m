@@ -18,7 +18,7 @@ function [r,hist] = hw3newton(f, fp, x1, ftol, xtol, Nmax)
             r = last_value;
             return
         end
-        
+   
         % Do the iteration
         last_value = current_value;
         current_value = current_value - f(current_value)/fp(current_value);
