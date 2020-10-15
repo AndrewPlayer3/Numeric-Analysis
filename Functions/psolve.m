@@ -1,5 +1,13 @@
 function c = psolve(P, L, b)
-    b = P * b;
+    
+    % Permute b
+    m = length(P);
+    bp = b;
+    for i = [1:m]
+       b(i) = bp(P(1,i)); 
+    end
+    
+    % Do normal lsolve now
     n = length(b);
     c = zeros(1, n);
     for i=1:n
