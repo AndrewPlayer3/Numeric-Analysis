@@ -1,6 +1,9 @@
 #include <iostream>
 #include <math.h>
 
+// This function takes a double binary number 
+// and converts it to a double decimal number
+
 double bin2dec(std::string number) {
     double total = 0;
     int location = 0;
