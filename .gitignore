@@ -8,4 +8,6 @@
 *.pdf
 *.synctex.gz
 *.m~
+*.asv
 .vscode
+*.el
