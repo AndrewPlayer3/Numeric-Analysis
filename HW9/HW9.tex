@@ -134,9 +134,72 @@ $k(A) = ||A||_{\infty}||A^{-1}||_{\infty} = 15 * 7 = 105$
 
 \begin{exercise}{Exercise 7.10}
 \end{exercise}
+$||v||_{\infty} <= ||v||_{2} <= \sqrt{n}||v||_{\infty}$
+\newline
+Since the 2 norm includes the value of the infinity norm, and it potentially adds other positive numbers, it must be equal to or greater than
+the infinity norm. For the right hand side, we can rewrite $\sqrt{n}||v||_{\infty}$ as $\sqrt{n||v||_{\infty}^2}$, which is equivalent to 
+$\sum_{n}(\sqrt{||v||_{\infty}^2}) = \sqrt{||v||_{\infty(0)}^2 + ... + ||v||_{\infty(n)}}$. This must be greater than or equal to the 2 norm, since it 
+is the square root of the sums of the squares of the largest element n times, while the 2 norm is the square root of the sum of the squares of all of the n
+elements.
+\newline
 
 \begin{exercise}{Exercise 7.14}
 \end{exercise}
+Made A Using:
+\begin{lstlisting} [language = Matlab]
+function A = makePolyMatrix(rows, cols)
+    A = zeros(cols, rows);
+    x = [0:0.02:1];
+    for i = 1:cols
+        for j = 1:rows
+            A(i,j) = x(i)^(j-1);
+        end
+    end
+end
+\end{lstlisting}
+And b Using:
+\begin{lstlisting}
+b = cos(4*[0:0.02:1]);
+\end{lstlisting}
+Output:
+\begin{lstlisting}
+>> A\transpose(b)
+
+ans =
+
+   1.000000039138594
+  -0.000012181985867
+  -7.999527787796118
+  -0.007144222184837
+  10.722630404476709
+  -0.257624930148296
+  -4.946520315453860
+  -1.373425964000899
+   3.243408197101280
+  -1.145409347536878
+   0.109982450761034
+\end{lstlisting}
+Output:
+\begin{lstlisting}
+>> (A'*A)\(A'*transpose(b))
+
+ans =
+
+   1.000000031627852
+  -0.000010656828913
+  -7.999574157412370
+  -0.006586236914639
+  10.719162715986650
+  -0.245099895519528
+  -4.974291177988655
+  -1.335087898550025
+   3.211283234317702
+  -1.130456696216773
+   0.107017074789845
+\end{lstlisting}
+Both results seem to differ fairly significantly. In some places, the QR method differs from the other
+by the second decimal location. I'm guessing this is a result of the fact that the matrix is very poorly
+conditioned. cond(A) returns 2.037149463741580e+07.
 
 \begin{exercise}{Supplemental 1}
 Let
@@ -161,6 +224,50 @@ of the matrices $A$ from the previous problem.
 \item Discuss the relationship between parts (b) and (c).
 \end{enumerate}
 \end{exercise}
+a.) After solving upwards from the bottom it is clear that $x_{2}, x_{3}, x_{4},  and x_{5}$ must be equal to 1.
+Then the final line ends up being $1x_{1} - 1(1) + (\alpha - \beta)(1) + (\beta)(1) = \alpha$ which simplifies to $x_{1} - 1 + \alpha = \alpha$,
+so $x_{1} = 1$.
+\newline
+b.)
+\newline
+\begin{center}
+\begin{tabular}{  c c }
+ $\beta$ & $||x - \delta x||_{\infty}$ \\
+ $10^1$ & 4.440892098500626e-16 \\
+ $10^2$ & 5.773159728050814e-15 \\
+ $10^3$ & 2.275957200481571e-14 \\
+ $10^4$ & 3.638200851696638e-13 \\
+ $10^5$ & 5.820788295807233e-12 \\
+ $10^6$ & 2.328315318322893e-11 \\
+ $10^7$ & 3.725291186640334e-10 \\
+ $10^8$ & 5.960464566356904e-09 \\
+ $10^9$ & 2.384185793236071e-08 \\
+ $10^{10}$ & 3.814697265847045e-07 \\
+ $10^{11}$ & 6.103515625022204e-06 \\
+ $10^{12}$ & 2.441406250008882e-05
+\end{tabular}
+\end{center}
+c.)
+\newline
+\begin{center}
+\begin{tabular}{  c c }
+ $A_{x}$ & k(A) \\
+ $1$ & 1.604207408112680e+02\\
+ $2$ & 1.426891638453749e+04 \\
+ $3$ & 1.415422170357497e+06\\
+ $4$ & 1.414333835743986e+08 \\
+ $5$ & 1.414225583840510e+10 \\
+ $6$ & 1.414214764461144e+12\\
+ $7$ & 1.414213682581312e+14 \\
+ $8$ & 1.414213574393911e+16\\
+ $9$ & 1.414213563575177e+18\\
+ $10$ & 1.414213562493303e+20\\
+ $11$ & 1.414213562385116e+22\\
+ $12$ & 1.414213562374298e+24
+\end{tabular}
+\end{center}
+d.) As $\beta$ increases, the condition number also increases. This leads to a larger and larger difference between $x$ and $\delta{x}$
+in the usolve.
 
 \begin{exercise}{Supplemental 2}
 Suppose you have data points $(1,y_1),\ldots, (n,y_n)$
@@ -171,6 +278,10 @@ such that
 y_k = C \alpha^k
 \]
 \end{exercise}
+Since $(k, log(y_{k}))$ forms a line with positive slope, we can rewrite this as $log_{b}(y_{k}) = mk + c$, we can 
+then raise everything to the power of the base and get $y_{k} = b^{mk + c} = b^{c}(b^m)^k$. Since $b^c$ and $b^m$ are 
+both constants, and $b^c$ must be greater than 0, and $b^m$ must be greater than 1 since the slope and b are positive, this can now be rewritten as
+$y_{k} = Ca^k$ where $C > 0$ and $a > 1$.  
 
 \begin{exercise}{Supplemental 3}
 We will shortly be seeing the Vandermonde matrices,
@@ -203,5 +314,33 @@ obtain $m$ and $b$.
 \]
 \end{enumerate}
 \end{exercise}
+\graphicspath{~/Code/Numeric-Analysis/HW9/}
+a.)\newline
+\includegraphics[scale=0.5]{Sup3_1_Plot.jpg}
+b.)\newline
+\includegraphics[scale=0.5]{Sup3_2.jpg}
+Code:
+\begin{lstlisting} [language = Matlab]
+% Make the .../n vector
+function x = HW9sup3(n)
+    x = zeros(n+1, 1);
+    for i = 0:n
+        x(i+1) = i/n;
+    end
+end
+% Make a vector of the condition numbers
+conditions = zeros(20, 1);
+for n = 1:20
+    conditions(n) = cond(vander(HW9sup3(n)));
+end
+x = [1:20];
+P = polyfit(x, log(conditions), 1)
+% P(1) = m, P(2) = b
+P =
 
+   2.019377877332083  -1.501448611841827
+
+\end{lstlisting}
+c.)\newline
+$C = e^{P(2)} = exp(P(2)) = 0.222807165159836$ and $a = e^{P(1)} = exp(P(1)) = 7.533636629343970$
 \end{document}
